@@ -25,6 +25,8 @@ jobs:
         uses: sonarsource/sonarcloud-github-action@master
         with:
           projectBaseDir: .
+          projectKey: devops-project
+          organization: krisztavasas
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
