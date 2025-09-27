@@ -21,12 +21,13 @@ jobs:
       - name: Build
         run: mvn clean verify
 
-      - name: SonarQube
-        uses: sonarsource/sonarcloud-github-action@master
+      - name: SonarQube Scan
+        uses: SonarSource/sonarqube-scan-action@v5.0.0
         with:
-          projectBaseDir: .
-          projectKey: devops-project
-          organization: krisztavasas
+          args: >
+            -Dsonar.projectKey=devops-project
+            -Dsonar.organization=krisztavasas
+            -Dsonar.host.url=https://sonarcloud.io
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
