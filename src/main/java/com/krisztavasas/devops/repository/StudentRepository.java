@@ -11,6 +11,8 @@ import java.util.UUID;
 @Repository
 public interface StudentRepository extends JpaRepository<Student, UUID> {
 
+    boolean existsByEmail(String email);
+
     @Modifying
     @Query("DELETE FROM Student s WHERE s.active = false")
     int deleteInactiveStudents();
