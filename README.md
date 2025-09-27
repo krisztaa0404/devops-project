@@ -1,12 +1,12 @@
 # DevOps Project - Student Management System
 
-A Spring Boot application for managing student records with automated tasks for database cleanup and error simulation. Built for university DevOps coursework.
+A Spring Boot application for managing student records with automated tasks for student creation and database cleanup. Built for university DevOps coursework.
 
 ## Features
 
 - **Student Management**: CRUD operations for student records
+- **Automated Student Creation**: Scheduled task to create students from JSON file every 4 minutes
 - **Automated Database Cleanup**: Scheduled task to remove inactive students every 2 minutes
-- **Error Simulation**: Scheduled task that randomly generates errors for monitoring/testing purposes
 - **RESTful API**: JSON-based REST endpoints for all operations
 - **H2 Database**: In-memory database for development and testing
 - **Spring Boot Actuator**: Health checks and monitoring endpoints
@@ -84,15 +84,16 @@ A Spring Boot application for managing student records with automated tasks for 
 
 ## Scheduled Tasks
 
+### Student Creation Task
+- **Frequency**: Every 4 minutes (240,000ms)
+- **Purpose**: Automatically creates students from `static/students.json` file
+- **Behavior**: Skips students that already exist (based on email uniqueness)
+- **Location**: `StudentCreationTask.java:25`
+
 ### Database Cleanup Task
 - **Frequency**: Every 2 minutes (120,000ms)
 - **Purpose**: Automatically removes inactive students from database
 - **Location**: `DatabaseCleanupTask.java:16`
-
-### Error Simulation Task
-- **Frequency**: Every 3 minutes (180,000ms)
-- **Purpose**: Randomly throws exceptions (10% chance) for monitoring/testing
-- **Location**: `ErrorSimulationTask.java:15`
 
 ## Prerequisites
 
@@ -125,6 +126,21 @@ mvn clean package
 java -jar target/devops-0.0.1-SNAPSHOT.jar
 ```
 
+## Docker Deployment
+
+### Using Docker Compose (Recommended):
+```bash
+docker-compose up -d
+```
+
+### Manual Docker Build:
+```bash
+docker build -t devops-spring-boot-app .
+docker run -p 8080:8080 devops-spring-boot-app
+```
+
+The Dockerfile uses multi-stage build with Maven for compilation and Alpine JRE for runtime.
+
 ## Running Tests
 
 ### Run all tests
@@ -137,18 +153,17 @@ mvn test
 # Unit tests
 mvn test -Dtest=StudentServiceTest
 mvn test -Dtest=StudentControllerTest
+mvn test -Dtest=StudentCreationTaskTest
 mvn test -Dtest=DatabaseCleanupTaskTest
-mvn test -Dtest=ErrorSimulationTaskTest
 
 # Integration tests
 mvn test -Dtest=StudentControllerIntegrationTest
 ```
 
 ### Test Coverage
-The project includes comprehensive tests:
+The project includes tests:
 - **Unit Tests**: Service layer, Controller layer, Scheduled tasks
 - **Integration Tests**: End-to-end API testing
-- **Context Tests**: Spring Boot application context loading
 
 ## Database Access
 
@@ -162,12 +177,6 @@ The application uses H2 in-memory database. To access the H2 console:
    - **Password**: (leave empty)
 
 ## Configuration
-
-### Application Properties
-The application configuration is minimal and located in `src/main/resources/application.properties`:
-```properties
-spring.application.name=devops
-```
 
 ### Default Behavior
 - **Database**: H2 in-memory (auto-configured)
@@ -211,28 +220,20 @@ curl http://localhost:8080/actuator/health
 src/
 ├── main/java/com/krisztavasas/devops/
 │   ├── controller/     # REST controllers
-│   ├── entity/        # JPA entities
-│   ├── repository/    # Data repositories
-│   ├── service/       # Business logic
-│   ├── task/          # Scheduled tasks
+│   ├── entity/         # JPA entities
+│   ├── repository/     # Data repositories
+│   ├── service/        # Business logic
+│   ├── task/           # Scheduled tasks
 │   └── DevopsApplication.java
 ├── main/resources/
 │   └── application.properties
-└── test/java/         # Test classes
+└── test/java/          # Test classes
 ```
-
-### Key Components
-- **StudentController** (`controller/StudentController.java:15`): REST API endpoints
-- **StudentService** (`service/StudentService.java:14`): Business logic and validation
-- **Student** (`entity/Student.java:10`): JPA entity definition
-- **StudentRepository** (`repository/StudentRepository.java:12`): Data access layer
-- **DatabaseCleanupTask** (`task/DatabaseCleanupTask.java:9`): Automated cleanup
-- **ErrorSimulationTask** (`task/ErrorSimulationTask.java:9`): Error simulation
 
 ## Monitoring
 
 The application provides several monitoring capabilities:
 - **Actuator Health Endpoint**: `/actuator/health`
 - **Comprehensive Logging**: All operations are logged with SLF4J
-- **Scheduled Task Monitoring**: Both cleanup and error simulation tasks log their execution
+- **Scheduled Task Monitoring**: Student creation and cleanup tasks log their execution
 - **Exception Handling**: Proper error responses and logging for all failures

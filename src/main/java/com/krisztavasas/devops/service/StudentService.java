@@ -99,6 +99,16 @@ public class StudentService {
         }
     }
 
+    public boolean existsByEmail(String email) {
+        try {
+            log.debug("Checking if student exists with email: {}", email);
+            return studentRepository.existsByEmail(email);
+        } catch (Exception e) {
+            log.error("Error checking if student exists with email: {}", email, e);
+            return false;
+        }
+    }
+
     @Transactional
     public int deleteInactiveStudents() {
         try {

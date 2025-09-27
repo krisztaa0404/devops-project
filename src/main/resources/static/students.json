@@ -1,0 +1,62 @@
+[
+  {
+    "name": "John Smith",
+    "email": "john.smith@example.com",
+    "course": "Computer Science",
+    "active": false
+  },
+  {
+    "name": "Emily Johnson",
+    "email": "emily.johnson@example.com",
+    "course": "Mathematics",
+    "active": false
+  },
+  {
+    "name": "Michael Brown",
+    "email": "michael.brown@example.com",
+    "course": "Physics",
+    "active": false
+  },
+  {
+    "name": "Sarah Davis",
+    "email": "sarah.davis@example.com",
+    "course": "Chemistry",
+    "active": false
+  },
+  {
+    "name": "David Wilson",
+    "email": "david.wilson@example.com",
+    "course": "Biology",
+    "active": false
+  },
+  {
+    "name": "Lisa Garcia",
+    "email": "lisa.garcia@example.com",
+    "course": "Engineering",
+    "active": false
+  },
+  {
+    "name": "Robert Martinez",
+    "email": "robert.martinez@example.com",
+    "course": "Literature",
+    "active": false
+  },
+  {
+    "name": "Jennifer Taylor",
+    "email": "jennifer.taylor@example.com",
+    "course": "History",
+    "active": false
+  },
+  {
+    "name": "Christopher Anderson",
+    "email": "christopher.anderson@example.com",
+    "course": "Psychology",
+    "active": false
+  },
+  {
+    "name": "Amanda White",
+    "email": "amanda.white@example.com",
+    "course": "Art",
+    "active": false
+  }
+]
