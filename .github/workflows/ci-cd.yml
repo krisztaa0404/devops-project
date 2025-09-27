@@ -19,7 +19,9 @@ jobs:
           distribution: 'temurin'
 
       - name: Build
-        run: mvn clean verify
+        run: mvn clean verify sonar:sonar
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
       - name: SonarQube Scan
         uses: SonarSource/sonarqube-scan-action@v6.0.0
