@@ -1,0 +1,141 @@
+{
+  "id": null,
+  "title": "Elasticsearch Overview",
+  "uid": "elasticsearch-overview",
+  "schemaVersion": 36,
+  "version": 1,
+  "time": {
+    "from": "now-1h",
+    "to": "now"
+  },
+  "refresh": "30s",
+  "panels": [
+    {
+      "id": 1,
+      "type": "stat",
+      "title": "Cluster Health",
+      "datasource": {"type": "prometheus", "uid": "Prometheus"},
+      "gridPos": {"h": 6, "w": 8, "x": 0, "y": 0},
+      "targets": [
+        {
+          "expr": "elasticsearch_cluster_health_status",
+          "legendFormat": "health"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "green", "value": 0 },
+              { "color": "yellow", "value": 1 },
+              { "color": "red", "value": 2 }
+            ]
+          },
+          "mappings": [
+            {"options": {"0": {"text": "Green"}}, "type": "value"},
+            {"options": {"1": {"text": "Yellow"}}, "type": "value"},
+            {"options": {"2": {"text": "Red"}}, "type": "value"}
+          ]
+        }
+      }
+    },
+    {
+      "id": 2,
+      "type": "stat",
+      "title": "Cluster Nodes",
+      "datasource": {"type": "prometheus", "uid": "Prometheus"},
+      "gridPos": {"h": 6, "w": 8, "x": 8, "y": 0},
+      "targets": [
+        {
+          "expr": "elasticsearch_cluster_health_number_of_nodes",
+          "legendFormat": "Nodes"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "color": {"fixedColor": "blue"}
+        }
+      }
+    },
+    {
+      "id": 3,
+      "type": "stat",
+      "title": "Total Documents",
+      "datasource": {"type": "prometheus", "uid": "Prometheus"},
+      "gridPos": {"h": 6, "w": 8, "x": 16, "y": 0},
+      "targets": [
+        {
+          "expr": "sum(elasticsearch_indices_docs{cluster=\"docker-cluster\"})",
+          "legendFormat": "Documents"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "color": {"fixedColor": "green"},
+          "unit": "short"
+        }
+      }
+    },
+    {
+      "id": 4,
+      "type": "timeseries",
+      "title": "Index Document Count",
+      "datasource": {"type": "prometheus", "uid": "Prometheus"},
+      "gridPos": {"h": 10, "w": 12, "x": 0, "y": 6},
+      "targets": [
+        {
+          "expr": "elasticsearch_indices_docs{cluster=\"docker-cluster\"}",
+          "legendFormat": "{{index}}"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "color": {"mode": "palette-classic"}
+        }
+      }
+    },
+    {
+      "id": 5,
+      "type": "timeseries",
+      "title": "Index Size (Bytes)",
+      "datasource": {"type": "prometheus", "uid": "Prometheus"},
+      "gridPos": {"h": 10, "w": 12, "x": 12, "y": 6},
+      "targets": [
+        {
+          "expr": "elasticsearch_indices_store_size_bytes{cluster=\"docker-cluster\"}",
+          "legendFormat": "{{index}}"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "bytes",
+          "color": {"mode": "palette-classic"}
+        }
+      }
+    },
+    {
+      "id": 6,
+      "type": "timeseries",
+      "title": "Log Ingestion Rate",
+      "datasource": {"type": "prometheus", "uid": "Prometheus"},
+      "gridPos": {"h": 8, "w": 24, "x": 0, "y": 16},
+      "targets": [
+        {
+          "expr": "rate(elasticsearch_indices_docs{index=~\"filebeat.*\"}[5m])",
+          "legendFormat": "{{index}} - docs/sec"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "color": {"mode": "palette-classic"}
+        }
+      }
+    }
+  ]
+}

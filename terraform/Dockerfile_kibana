@@ -1,0 +1,32 @@
+FROM docker.elastic.co/kibana/kibana:8.15.0
+
+USER root
+
+# Create directories for configuration
+RUN mkdir -p /usr/share/kibana/config/saved_objects
+
+# Copy saved objects (data views)
+COPY modules/kibana/saved_objects/data_views.ndjson /usr/share/kibana/config/saved_objects/
+
+# Create initialization script
+RUN echo '#!/bin/bash\n\
+echo "Waiting for Kibana to be ready..."\n\
+until curl -s -f http://localhost:5601/api/status > /dev/null 2>&1; do\n\
+  sleep 5\n\
+done\n\
+\n\
+echo "Importing data views..."\n\
+curl -X POST "http://localhost:5601/api/saved_objects/_import" \\\n\
+  -H "kbn-xsrf: true" \\\n\
+  --form file=@/usr/share/kibana/config/saved_objects/data_views.ndjson\n\
+\n\
+echo "Data views imported successfully"' > /usr/share/kibana/init-data-views.sh
+
+RUN chmod +x /usr/share/kibana/init-data-views.sh
+RUN chown kibana:kibana /usr/share/kibana/init-data-views.sh
+RUN chown -R kibana:kibana /usr/share/kibana/config
+
+USER kibana
+
+# Start Kibana and initialize data views in background
+CMD ["/bin/bash", "-c", "/usr/share/kibana/init-data-views.sh & /usr/local/bin/kibana-docker"]

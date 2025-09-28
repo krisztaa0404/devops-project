@@ -1,0 +1,13 @@
+FROM docker.elastic.co/beats/filebeat:8.15.0
+
+# Copy the custom configuration file
+COPY modules/filebeat/config/filebeat.yml /usr/share/filebeat/filebeat.yml
+
+# Set proper ownership and permissions, create logs directory
+USER root
+RUN chown root:root /usr/share/filebeat/filebeat.yml && \
+    chmod 644 /usr/share/filebeat/filebeat.yml && \
+    mkdir -p /usr/share/filebeat/logs
+
+# Stay as root to access Docker container logs
+USER root
