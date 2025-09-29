@@ -8,6 +8,8 @@ module "app" {
   image_name    = "ghcr.io/${var.github_username}/${var.github_project_name}/spring-boot-app:latest"
   external_port = var.app_port
   network_name  = docker_network.app_network.name
+
+  depends_on = [module.filebeat]
 }
 
 module "prometheus" {

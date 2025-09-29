@@ -20,15 +20,15 @@ resource "docker_container" "filebeat" {
   name  = "filebeat"
   image = docker_image.filebeat.image_id
 
-  volumes {
-    host_path      = "/var/run/docker.sock"
-    container_path = "/var/run/docker.sock"
-    read_only      = true
+  ports {
+    internal = 514
+    external = 514
+    protocol = "udp"
   }
 
   volumes {
-    host_path      = "/var/lib/docker/containers"
-    container_path = "/var/lib/docker/containers"
+    host_path      = "/var/run/docker.sock"
+    container_path = "/var/run/docker.sock"
     read_only      = true
   }
 

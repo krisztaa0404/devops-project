@@ -69,3 +69,8 @@ This configuration has been tested on:
 **Docker**: Version 27.4.0
 **Terraform**: Version 1.8.0
 **Docker Desktop**: With containerd disabled (traditional image storage)
+
+**System**: Windows 11 with WSL2 (Ubuntu20.04LTS)
+**Docker**: Docker Desktop for Windows
+**Terraform**: Latest version
+**WSL**: Windows Subsystem for Linux 2

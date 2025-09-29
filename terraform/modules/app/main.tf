@@ -23,4 +23,12 @@ resource "docker_container" "app" {
     networks_advanced {
         name = var.network_name
     }
+
+    log_driver = "syslog"
+    log_opts = {
+        "syslog-address" = "udp://127.0.0.1:514"
+        "tag" = "springboot-app"
+        "syslog-facility" = "local0"
+    }
+
 }

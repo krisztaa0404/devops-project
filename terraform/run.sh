@@ -5,8 +5,14 @@
 
 echo "🚀 Starting Terraform infrastructure setup..."
 
-# Set up Terraform alias using Docker
-alias terraform='docker run -it --rm -v "$PWD":/workspace -v /var/run/docker.sock:/var/run/docker.sock -w /workspace hashicorp/terraform:light'
+# Define terraform as a function instead of alias (works in WSL + Git Bash)
+terraform() {
+  docker run -it --rm \
+    -v "$PWD":/workspace \
+    -v /var/run/docker.sock:/var/run/docker.sock \
+    -w /workspace \
+    hashicorp/terraform:light "$@"
+}
 
 # Initialize Terraform
 echo "🔧 Initializing Terraform..."

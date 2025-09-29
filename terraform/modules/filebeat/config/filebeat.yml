@@ -1,14 +1,25 @@
 filebeat.inputs:
-- type: container
-  paths:
-    - '/var/lib/docker/containers/*/*.log'
-  processors:
-    - add_docker_metadata:
-        host: "unix:///var/run/docker.sock"
-    - decode_json_fields:
-        fields: ["message"]
-        target: ""
-        overwrite_keys: true
+- type: syslog
+  protocol.udp:
+    host: "0.0.0.0:514"
+  fields:
+    service: "springboot-app"
+  fields_under_root: true
+
+processors:
+  - add_docker_metadata:
+      host: "unix:///var/run/docker.sock"
+  - dissect:
+      tokenizer: "<%{priority}>%{timestamp} %{hostname} %{program}: %{message}"
+      field: "message"
+      target_prefix: "syslog"
+  - decode_json_fields:
+      fields: ["syslog.message"]
+      target: ""
+      overwrite_keys: true
+      when:
+        contains:
+          syslog.message: "{"
 
 output.elasticsearch:
   hosts: ["elasticsearch:9200"]

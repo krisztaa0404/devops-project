@@ -21,7 +21,7 @@
       },
       "targets": [
         {
-          "query": "container.name:springboot-app",
+          "query": "service:springboot-app",
           "refId": "A",
           "bucketAggs": [
             {
