@@ -1,4 +1,4 @@
-Add# Infrastructure Services
+# Infrastructure Services
 
 This Terraform configuration deploys a complete logging and monitoring stack using Docker containers.
 
