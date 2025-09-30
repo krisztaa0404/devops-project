@@ -61,3 +61,11 @@ module "kibana" {
   depends_on = [module.elasticsearch]
 }
 
+module "nginx" {
+  source        = "./modules/nginx"
+  external_port = var.nginx_port
+  network_name  = docker_network.app_network.name
+
+  depends_on = [module.grafana, module.prometheus, module.kibana]
+}
+

@@ -24,6 +24,10 @@ This Terraform configuration deploys a complete logging and monitoring stack usi
 - **Port**: 3001
 - **Purpose**: Metrics visualization and dashboards
 
+### **Nginx**
+- **Port**: 80
+- **Features**: Routes traffic to backend services
+
 ### **App Container**
 - **Purpose**: Sample application for generating logs and metrics
 - **Integration**: Logs shipped via Filebeat, metrics scraped by Prometheus
@@ -41,6 +45,7 @@ terraform apply
 ```
 
 Access services at:
+- Nginx: http://localhost:80 or http://devops-project.test
 - Kibana: http://localhost:5601
 - Grafana: http://localhost:3001
 - Prometheus: http://localhost:9090

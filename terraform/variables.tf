@@ -57,3 +57,9 @@ variable "kibana_port" {
   type        = number
   default     = 5601
 }
+
+variable "nginx_port" {
+  description = "Host port for Nginx"
+  type        = number
+  default     = 80
+}
