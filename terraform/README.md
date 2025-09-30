@@ -35,6 +35,9 @@ This Terraform configuration deploys a complete logging and monitoring stack usi
 ## Usage
 
 ```bash
+# Setup hosts file for custom domains (one-time setup)
+./setup-hosts.sh
+
 # Quick start
 ./run.sh
 
@@ -46,11 +49,24 @@ terraform apply
 
 Access services at:
 - Nginx: http://localhost:80 or http://devops-project.test
-- Kibana: http://localhost:5601
-- Grafana: http://localhost:3001
-- Prometheus: http://localhost:9090
+- Kibana: http://localhost:5601 or http://kibana.devops-project.test
+- Grafana: http://localhost:3001 or http://grafana.devops-project.test
+- Prometheus: http://localhost:9090 or http://prometheus.devops-project.test
 
 ## Troubleshooting
+
+### WSL Line Ending Issues
+
+If you're using WSL and get permission denied errors when running shell scripts:
+
+**Issue**: Windows line endings (CRLF) cause execution issues in WSL
+**Solution**: Convert line endings to Unix format for both scripts:
+```bash
+sed -i 's/\r$//' setup-hosts.sh
+sed -i 's/\r$//' run.sh
+chmod +x setup-hosts.sh
+chmod +x run.sh
+```
 
 ### Docker Desktop with containerd
 
