@@ -10,12 +10,6 @@ variable "github_project_name" {
   default = "devops-project"
 }
 
-variable "github_token" {
-  description = "GitHub personal access token"
-  type        = string
-  sensitive   = true
-}
-
 variable "app_port" {
   description = "Host port for Spring Boot app"
   type        = number
